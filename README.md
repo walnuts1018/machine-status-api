@@ -1,1 +1,1 @@
-# go-api-test
+# machine-status-api
