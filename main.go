@@ -14,5 +14,17 @@ func main() {
 			"message": "Hello World!",
 		})
 	})
+	r.PUT("/somePut", boot_machine)
 	log.Fatal(r.Run())
+}
+
+func boot_machine(c *gin.Context, name string) {
+	
+    if err != nil{
+        c.String(http.StatusInternalServerError, "Server Error")
+        return
+    }
+    c.JSON(http.StatusCreated, gin.H{
+        "status": "ok",
+    })
 }
