@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: go-sample
-          image: ghcr.io/walnuts1018/go-sample-image:latest
+          image: ghcr.io/walnuts1018/machine-status-api:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
