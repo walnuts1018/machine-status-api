@@ -3,11 +3,10 @@ ENV ROOT=/go/src/app
 RUN mkdir ${ROOT}
 WORKDIR ${ROOT}
 
-COPY go.mod go.sum ./
-COPY . .
+COPY ./src ./
 RUN go get
 
 RUN CGO_ENABLED=0 GOOS=linux go build -o $ROOT/binary
 EXPOSE 8080
 CMD ["/go/src/app/binary"]
-LABEL org.opencontainers.image.source=https://github.com/walnuts1018/go-api-test
+LABEL org.opencontainers.image.source=https://github.com/walnuts1018/machine-status-api
