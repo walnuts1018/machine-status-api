@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"time"
@@ -12,16 +13,19 @@ import (
 func main() {
 	log.Println("start server...")
 	r := gin.Default()
-	r.GET("/hello", func(context *gin.Context) {
-		context.JSON(200, gin.H{
-			"message": "Hello World!",
+	boot := r.Group("/boot")
+	{
+		boot.GET("/hello-go", func(context *gin.Context) {
+			context.JSON(200, gin.H{
+				"message": "Hello World!",
+			})
 		})
-	})
-	r.PUT("/boot/alice", boot_alice)
+		boot.POST("/alice", bootAlice)
+	}
 	log.Fatal(r.Run())
 }
 
-func boot_alice(c *gin.Context) {
+func bootAlice(c *gin.Context) {
 
 	var push_time time.Duration = 800 //ミリ秒
 
@@ -33,14 +37,17 @@ func boot_alice(c *gin.Context) {
 		return
 	}
 
-	pin_boot := rpio.Pin(40) // GPIO40*ピン*<-ピンであることに注意
+	pin_boot := rpio.Pin(21) // GPIO21<-GPIO番号であることに注意
 	pin_boot.Output()
 
 	// push_timeミリ秒出力（aliceの電源スイッチピンをショート）
+	fmt.Println("Start GPIO operating")
 	pin_boot.High()
 	time.Sleep(push_time * time.Millisecond)
 	pin_boot.Low()
 
+	//他のピンがdefault Inputなので戻しておく
+	pin_boot.Input()
 	//gpi処理終わり
 	rpio.Close()
 
