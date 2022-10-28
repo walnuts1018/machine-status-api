@@ -10,4 +10,4 @@ RUN go get
 RUN CGO_ENABLED=0 GOOS=linux go build -o $ROOT/binary
 EXPOSE 8080
 CMD ["/go/src/app/binary"]
-LABEL org.opencontainers.image.source=https://github.com/walnuts-1018/go-api-test
+LABEL org.opencontainers.image.source=https://github.com/walnuts1018/go-api-test
