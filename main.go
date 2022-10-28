@@ -11,7 +11,7 @@ import (
 )
 
 func main() {
-	log.Println("start server...")
+	log.Println("Server Start")
 	r := gin.Default()
 	boot := r.Group("/boot")
 	{
@@ -26,7 +26,6 @@ func main() {
 }
 
 func bootAlice(c *gin.Context) {
-
 	var push_time time.Duration = 800 //ミリ秒
 
 	// gpio処理開始
@@ -48,6 +47,7 @@ func bootAlice(c *gin.Context) {
 
 	//他のピンがdefault Inputなので戻しておく
 	pin_boot.Input()
+
 	//gpi処理終わり
 	rpio.Close()
 
