@@ -1,25 +1,27 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: go-sample
+  name: machine-status-api
   labels:
-    app: go-sample
+    app: machine-status-api
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
-      app: go-sample
+      app: machine-status-api
   template:
     spec:
       imagePullSecrets:
         - name: regcred
     metadata:
       labels:
-        app: go-sample
+        app: machine-status-api
     spec:
       containers:
-        - name: go-sample
+        - name: machine-status-api
           image: ghcr.io/walnuts1018/machine-status-api:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
+      nodeSelector:
+          kubernetes.io/hostname: kurumi-01
