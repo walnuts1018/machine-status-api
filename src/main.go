@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/stianeikeland/go-rpio"
+	"github.com/stianeikeland/go-rpio/v4"
 )
 
 func main() {
@@ -30,9 +30,9 @@ func bootAlice(c *gin.Context) {
 
 	// gpio処理開始
 	err := rpio.Open()
-
 	if err != nil {
-		c.String(http.StatusInternalServerError, "Server Error")
+		log.Println(err)
+		c.String(http.StatusInternalServerError, "Server Error Failed to open GPIO")
 		return
 	}
 
