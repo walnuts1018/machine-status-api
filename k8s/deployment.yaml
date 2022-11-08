@@ -24,6 +24,6 @@ spec:
             runAsGroup: 997
             privileged: true
           ports:
-            - containerPort: 8080
+            - containerPort: 80
       nodeSelector:
           kubernetes.io/hostname: kurumi-01

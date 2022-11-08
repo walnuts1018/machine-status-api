@@ -13,21 +13,34 @@ import (
 func main() {
 	log.Println("Server Start")
 	r := gin.Default()
-	boot := r.Group("/boot")
+	sw := r.Group("/switch")
 	{
-		boot.GET("/hello-go", func(context *gin.Context) {
+		sw.POST("/alice", switchAlice)
+	}
+
+	start := r.Group("/boot")
+	{
+		start.POST("/alice", switchAlice)
+	}
+
+	shutdown := r.Group("/shutdown")
+	{
+		shutdown.POST("/alice", switchAlice)
+	}
+
+	status := r.Group("/status")
+	{
+		status.GET("/hello-go", func(context *gin.Context) {
 			context.JSON(200, gin.H{
 				"message": "Hello World!",
 			})
 		})
-		boot.POST("/alice", bootAlice)
 	}
-	log.Fatal(r.Run())
+
+	log.Fatal(r.Run(":80"))
 }
 
-func bootAlice(c *gin.Context) {
-	var push_time time.Duration = 800 //ミリ秒
-
+func switchAlice(c *gin.Context, pushTime time.Duration) {
 	// gpio処理開始
 	err := rpio.Open()
 	if err != nil {
@@ -42,7 +55,7 @@ func bootAlice(c *gin.Context) {
 	// push_timeミリ秒出力（aliceの電源スイッチピンをショート）
 	fmt.Println("Start GPIO operating")
 	pin_boot.High()
-	time.Sleep(push_time * time.Millisecond)
+	time.Sleep(pushTime * time.Millisecond)
 	pin_boot.Low()
 
 	//他のピンがdefault Inputなので戻しておく
