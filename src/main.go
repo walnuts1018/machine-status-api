@@ -22,7 +22,7 @@ func main() {
 		})
 		boot.POST("/alice", actAlice)
 		boot.POST("/test", func(c *gin.Context) {
-			buf := make([]byte, 2048)
+			buf := make([]byte, 8192)
 			n, _ := c.Request.Body.Read(buf)
 			b := string(buf[0:n])
 			fmt.Println(b)
