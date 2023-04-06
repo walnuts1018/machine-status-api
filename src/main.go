@@ -20,13 +20,20 @@ func main() {
 				"message": "Hello World!",
 			})
 		})
-		boot.POST("/alice", bootAlice)
+		boot.POST("/alice", actAlice)
+		boot.POST("/test", func(c *gin.Context) {
+			buf := make([]byte, 2048)
+			n, _ := c.Request.Body.Read(buf)
+			b := string(buf[0:n])
+			fmt.Println(b)
+			c.JSON(http.StatusOK, gin.H{"status": "ok"})
+		})
 	}
 	log.Fatal(r.Run())
 }
 
-func bootAlice(c *gin.Context) {
-	var push_time time.Duration = 800 //ミリ秒
+func actAlice(c *gin.Context) {
+	var pushTime time.Duration = 800 //ミリ秒
 
 	// gpio処理開始
 	err := rpio.Open()
@@ -39,10 +46,10 @@ func bootAlice(c *gin.Context) {
 	pin_boot := rpio.Pin(21) // GPIO21<-GPIO番号であることに注意
 	pin_boot.Output()
 
-	// push_timeミリ秒出力（aliceの電源スイッチピンをショート）
+	// pushTimeミリ秒出力（aliceの電源スイッチピンをショート）
 	fmt.Println("Start GPIO operating")
 	pin_boot.High()
-	time.Sleep(push_time * time.Millisecond)
+	time.Sleep(pushTime * time.Millisecond)
 	pin_boot.Low()
 
 	//他のピンがdefault Inputなので戻しておく
