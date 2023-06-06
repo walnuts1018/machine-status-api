@@ -169,7 +169,7 @@ func machineStart(c *gin.Context) {
 func machineStop(c *gin.Context) {
 	targetMachineName := c.Param("machineName")
 	if targetMachineName == "alice" {
-		startAlice(c)
+		stopAlice(c)
 		return
 	}
 
@@ -333,6 +333,34 @@ func startAlice(c *gin.Context) {
 
 	c.JSON(http.StatusCreated, gin.H{
 		"message": "Starting Alice...",
+	})
+}
+
+func stopAlice(c *gin.Context) {
+	var pushTime time.Duration = 800 * time.Millisecond
+
+	status, _ := getAliceStatus()
+	if status == Inactive {
+		err := fmt.Errorf("failed to stop alice: alice is already stopping")
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": err.Error(),
+		})
+		log.Println(err)
+		return
+	}
+
+	err := pressAliceSwitch(pushTime)
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": err.Error(),
+		})
+		log.Printf("Failed to stop alice: %s", err)
+		return
+	}
+
+	c.JSON(http.StatusCreated, gin.H{
+		"message": "Stopping Alice...",
 	})
 }
 
