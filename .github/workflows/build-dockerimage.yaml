@@ -31,15 +31,26 @@ jobs:
        
       - name: Build and push Docker images
         uses: docker/build-push-action@v4.0.0
+        if: github.event_name == 'release'
         with:
           push: true
           context: .
           platforms: linux/amd64,linux/arm64
           tags: |
             ghcr.io/walnuts1018/machine-status-api:latest
-            ghcr.io/walnuts1018/machine-status-api:${{ github.sha }}-${{ github.run_number }}
             ghcr.io/walnuts1018/machine-status-api:${{ env.ImageTag }}
           
+      - name: Build and push Docker images
+        uses: docker/build-push-action@v4.0.0
+        if: github.event_name != 'release'
+        with:
+          push: true
+          context: .
+          platforms: linux/amd64,linux/arm64
+          tags: |
+            ghcr.io/walnuts1018/machine-status-api:latest
+            ghcr.io/walnuts1018/machine-status-api:test-${{ github.sha }}-${{ github.run_number }}
+
   NotifySucceed:
     if: ${{ success() }}
     name: Notify succeed
