@@ -1,0 +1,62 @@
+name: Run the WebGL build
+on:
+  - release
+  - workflow_dispatch
+jobs:
+  build:
+    name: Run the WebGL build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out
+        uses: actions/checkout@v3
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: walnuts1018
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: crazy-max/ghaction-docker-buildx@v3
+        with:
+          buildx-version: latest
+          qemu-version: latest
+       
+      - name: Build and push Docker images
+        uses: docker/build-push-action@v4.0.0
+        with:
+          push: true
+          context: .
+          platforms: linux/amd64,linux/arm64
+          tags: |
+            ghcr.io/walnuts1018/machine-status-api:latest
+            ghcr.io/walnuts1018/machine-status-api:${{ github.sha }}-${{ github.run_number }}
+          
+  NotifySucceed:
+    if: ${{ success() }}
+    name: Notify succeed
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Nofity build succeed
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_USERNAME: GitHub Actions
+          SLACK_TITLE: Workflow succeeded
+           
+  NotifyFailure:
+    if: ${{ failure() }}
+    name: Notify failure
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Nofity build failure
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_USERNAME: GitHub Actions
+          SLACK_TITLE: Workflow failed
+          SLACK_COLOR: danger
