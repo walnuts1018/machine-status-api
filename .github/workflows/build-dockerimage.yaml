@@ -21,11 +21,20 @@ jobs:
 
       - name: Set up Docker Buildx
         id: buildx
-        uses: crazy-max/ghaction-docker-buildx@v3
+        uses: docker/setup-buildx-action@v2.5.0
         with:
-          buildx-version: latest
-          qemu-version: latest
-       
+          version: latest
+      
+      - name: Cache Docker layers
+        uses: actions/cache@v1.2.1
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ github.ref }}-${{ github.sha }}
+          restore-keys: |
+            ${{ github.ref }}-${{ github.sha }}
+            ${{ github.ref }}
+            refs/head/main
+      
       - name: Get Tag from Release
         run: echo "ImageTag=${GITHUB_REF##*/}" >> $GITHUB_ENV
        
@@ -36,6 +45,8 @@ jobs:
           push: true
           context: .
           platforms: linux/amd64,linux/arm64
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache
           tags: |
             ghcr.io/walnuts1018/machine-status-api:latest
             ghcr.io/walnuts1018/machine-status-api:${{ env.ImageTag }}
