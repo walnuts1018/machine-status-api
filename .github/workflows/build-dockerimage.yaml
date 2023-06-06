@@ -73,7 +73,8 @@ jobs:
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
           SLACK_USERNAME: GitHub Actions
-          SLACK_TITLE: Workflow succeeded
+          SLACK_TITLE: Build docker image of machine-status-api succeeded
+          SLACK_MESSAGE: 'https://github.com/walnuts1018/machine-status-api/pkgs/container/machine-status-api'
            
   NotifyFailure:
     if: ${{ failure() }}
@@ -86,5 +87,6 @@ jobs:
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
           SLACK_USERNAME: GitHub Actions
-          SLACK_TITLE: Workflow failed
+          SLACK_TITLE: Build docker image of machine-status-api  failed
           SLACK_COLOR: danger
+          SLACK_MESSAGE: 'Run number : #${{ github.run_number }}'
