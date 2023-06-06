@@ -1,4 +1,4 @@
-name: Run the WebGL build
+name: Run the docker image build
 on:
   - release
   - workflow_dispatch
