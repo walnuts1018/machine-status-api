@@ -3,7 +3,7 @@ ENV ROOT=/build
 RUN mkdir ${ROOT}
 WORKDIR ${ROOT}
 
-COPY ./src ./
+COPY ./go.mod ./go.sum ./src ./
 RUN go get
 
 RUN CGO_ENABLED=0 GOOS=linux go build -o main $ROOT/main.go && chmod +x ./main
