@@ -18,6 +18,7 @@ func main() {
 		slog.Error("failed to create config", "error", err)
 		os.Exit(1)
 	}
+	slog.Info("Loaded config")
 
 	proxmoxClient := proxmox.NewClient(config)
 	gpioClient := gpio.NewClient()
