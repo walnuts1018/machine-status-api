@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/walnuts1018/machine-status-api/domain"
 	"github.com/walnuts1018/machine-status-api/domain/model"
@@ -23,6 +24,24 @@ func (c MachineUsecase) StartMachine(machineName string) error {
 	err := c.gpioClient.StartAlice()
 	if err != nil {
 		return fmt.Errorf("failed to start alice: %w", err)
+	}
+
+	timeout := time.After(5 * time.Minute)
+LOOP:
+	for {
+		select {
+		case <-timeout:
+			return fmt.Errorf("failed to start alice: timeout")
+		default:
+			aliceStatus, err := c.getAliceStatus()
+			if err != nil {
+				return fmt.Errorf("failed to get alice status: %w", err)
+			}
+			if aliceStatus == model.Healthy {
+				break LOOP
+			}
+		}
+		time.Sleep(1 * time.Second)
 	}
 
 	if machineName == "alice" {
