@@ -12,5 +12,6 @@ FROM alpine:3
 WORKDIR /app
 
 COPY --from=builder /build/main ./
+COPY --from=builder /usr/share/zoneinfo/Asia/Tokyo /usr/share/zoneinfo/Asia/Tokyo
 CMD ["./main"]
 LABEL org.opencontainers.image.source=https://github.com/walnuts1018/machine-status-api
