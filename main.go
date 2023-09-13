@@ -28,10 +28,13 @@ func main() {
 	defer cancel()
 
 	go func() {
+		slog.Info("start Task Loop")
 		usecase.Run(ctx)
 	}()
 
+	slog.Info("start handler")
 	err = handler.Run()
+
 	if err != nil {
 		slog.Error("failed to run handler", "error", err)
 		os.Exit(1)
