@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log/slog"
 	"os"
 
@@ -18,7 +19,7 @@ func main() {
 		slog.Error("failed to create config", "error", err)
 		os.Exit(1)
 	}
-	slog.Info("Loaded config")
+	fmt.Println("Loaded config")
 
 	proxmoxClient := proxmox.NewClient(config)
 	gpioClient := gpio.NewClient()
