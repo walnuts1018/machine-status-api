@@ -12,6 +12,5 @@ FROM alpine:3
 WORKDIR /app
 
 COPY --from=builder /build/main ./
-RUN id
 CMD ["./main"]
 LABEL org.opencontainers.image.source=https://github.com/walnuts1018/machine-status-api
