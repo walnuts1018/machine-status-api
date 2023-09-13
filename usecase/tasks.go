@@ -67,16 +67,16 @@ func Run(ctx context.Context) {
 
 func doTask(task *tasks) {
 	task.Status = Running
-	t := timeAlternative.Now()
-	task.StartedAt = &t
+	ts := timeAlternative.Now()
+	task.StartedAt = &ts
 	err := task.Func()
-	t = timeAlternative.Now()
+	tf := timeAlternative.Now()
 	if err != nil {
 		task.Status = Failure
 	} else {
 		task.Status = Success
 	}
-	task.FinishedAt = &t
+	task.FinishedAt = &tf
 }
 
 func FindTaskByID(id string) *tasks {
