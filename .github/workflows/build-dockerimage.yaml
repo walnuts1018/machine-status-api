@@ -1,14 +1,25 @@
-name: Run the docker image build
+name: Build Docker Image (amd64 & arm64)
 on:
   release:
-      types: [published]
+    types: [published]
   workflow_dispatch:
   
 jobs:
-  build:
-    name: Run the docker image build
+  ImageBuild:
+    name: Build Keycloak Custom Docker Image (amd64 & arm64)
     runs-on: ubuntu-latest
     steps:
+      - name: Slack notification of build start
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_USERNAME: GitHub Actions
+          SLACK_COLOR: "#4381de"
+          SLACK_ICON: "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
+          SLACK_TITLE: Start keycloak image build 
+          SLACK_MESSAGE: |
+            Run number : #${{ github.run_number }}
+          
       - name: Check out
         uses: actions/checkout@v3
 
@@ -24,7 +35,7 @@ jobs:
         uses: docker/setup-buildx-action@v2.5.0
         with:
           version: latest
-      
+
       - name: Cache Docker layers
         uses: actions/cache@v3
         with:
@@ -62,31 +73,36 @@ jobs:
             ghcr.io/walnuts1018/machine-status-api:test-latest
             ghcr.io/walnuts1018/machine-status-api:test-${{ github.sha }}-${{ github.run_number }}
 
-  NotifySucceed:
+  SucceessNotification:
     if: ${{ success() }}
-    name: Notify succeed
-    needs: [build]
+    name: Send Success Message
+    needs: [ImageBuild]
     runs-on: ubuntu-latest
     steps:
-      - name: Nofity build succeed
+      - name: Send Message to Slack
         uses: rtCamp/action-slack-notify@v2
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
           SLACK_USERNAME: GitHub Actions
-          SLACK_TITLE: Build docker image of machine-status-api succeeded
-          SLACK_MESSAGE: 'https://github.com/walnuts1018/machine-status-api/pkgs/container/machine-status-api'
+          SLACK_ICON: "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
+          SLACK_TITLE: Keycloak id:mage build succeeded
+          SLACK_MESSAGE: |
+            Run number : #${{ github.run_number }}
+            Image tag : ${{ github.sha }}-${{ github.run_number }}
+            Image URL : 
            
-  NotifyFailure:
+  FailureAlert:
     if: ${{ failure() }}
     name: Notify failure
-    needs: [build]
+    needs: [ImageBuild]
     runs-on: ubuntu-latest
     steps:
-      - name: Nofity build failure
+      - name: Send Failure Alert to Slack
         uses: rtCamp/action-slack-notify@v2
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
           SLACK_USERNAME: GitHub Actions
-          SLACK_TITLE: Build docker image of machine-status-api  failed
+          SLACK_ICON: "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
+          SLACK_TITLE: Keycloak image build failed
           SLACK_COLOR: danger
           SLACK_MESSAGE: 'Run number : #${{ github.run_number }}'
