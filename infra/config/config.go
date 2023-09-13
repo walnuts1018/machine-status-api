@@ -13,6 +13,7 @@ import (
 func NewConfig() (*model.Config, error) {
 	port := flag.String("port", "8080", "server port")
 	flag.Parse()
+	slog.Info(fmt.Sprintf("port: %v", *port))
 
 	err := godotenv.Load("./.config/.env")
 	if err != nil {
