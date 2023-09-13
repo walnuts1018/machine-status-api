@@ -7,9 +7,7 @@ import (
 
 	"github.com/walnuts1018/machine-status-api/handler"
 	"github.com/walnuts1018/machine-status-api/infra/config"
-	"github.com/walnuts1018/machine-status-api/mock/mockGpio"
-
-	//"github.com/walnuts1018/machine-status-api/infra/gpio"
+	"github.com/walnuts1018/machine-status-api/infra/gpio"
 	"github.com/walnuts1018/machine-status-api/infra/proxmox"
 	"github.com/walnuts1018/machine-status-api/usecase"
 )
@@ -23,7 +21,7 @@ func main() {
 	slog.Info("Loaded config")
 
 	proxmoxClient := proxmox.NewClient(config)
-	gpioClient := mockGpio.NewClient()
+	gpioClient := gpio.NewClient()
 	machineUsecase := usecase.NewClient(proxmoxClient, gpioClient)
 	handler := handler.NewHandler(machineUsecase)
 

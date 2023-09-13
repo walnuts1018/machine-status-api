@@ -15,9 +15,10 @@ func NewHandler(mu *usecase.MachineUsecase) *gin.Engine {
 	r := gin.Default()
 	v1 := r.Group("/v1")
 	{
-		v1.GET("/status", GetMachineStatus)
+		v1.GET("/machines/status/:machineName", GetMachineStatus)
 		v1.POST("/machines/start/:machineName", StartMachine)
 		v1.POST("/machines/stop/:machineName", StopMachine)
+		v1.GET("/tasks/:taskID", GetTaskStatus)
 	}
 	return r
 }
@@ -42,7 +43,7 @@ func StartMachine(ctx *gin.Context) {
 	ctx.JSON(200, gin.H{
 		"id":            task.ID,
 		"status":        task.Status,
-		"registered_at": t,
+		"registered_at": string(t),
 	})
 }
 
@@ -66,7 +67,7 @@ func StopMachine(ctx *gin.Context) {
 	ctx.JSON(200, gin.H{
 		"id":            task.ID,
 		"status":        task.Status,
-		"registered_at": t,
+		"registered_at": string(t),
 	})
 }
 
@@ -123,8 +124,8 @@ func GetTaskStatus(ctx *gin.Context) {
 	ctx.JSON(200, gin.H{
 		"id":            task.ID,
 		"status":        task.Status,
-		"registered_at": tr,
-		"started_at":    ts,
-		"finished_at":   tf,
+		"registered_at": string(tr),
+		"started_at":    string(ts),
+		"finished_at":   string(tf),
 	})
 }

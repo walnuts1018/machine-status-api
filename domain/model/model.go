@@ -7,26 +7,11 @@ type Config struct {
 	Port          int
 }
 
-type MachineStatus int
+type MachineStatus string
 
 const (
-	Unknown   MachineStatus = iota // Status Unknown
-	Healthy                        // Power ON and can access
-	Unhealthy                      //Power ON, but can not access
-	Inactive                       // Power OFF, but can not access
+	Unknown   MachineStatus = "Unknown"   // Status Unknown
+	Healthy   MachineStatus = "Healthy"   // Power ON and can access
+	Unhealthy MachineStatus = "Unhealthy" //Power ON, but can not access
+	Inactive  MachineStatus = "Inactive"  // Power OFF, but can not access
 )
-
-func (s MachineStatus) String() string {
-	switch s {
-	case 1:
-		return "Healthy"
-	case 0:
-		return "Unknown"
-	case -1:
-		return "Unhealthy"
-	case -2:
-		return "Inactive"
-	default:
-		return "Error"
-	}
-}
