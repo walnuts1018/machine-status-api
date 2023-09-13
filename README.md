@@ -20,4 +20,4 @@ docker buildx build --platform linux/amd64,linux/arm64 -t ghcr.io/walnuts1018/ma
 
 ## Kubernetes Manifest Sample
 
-- [.k8s](./.k8s)
+- [./.k8s](./.k8s)
