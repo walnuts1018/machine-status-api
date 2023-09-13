@@ -6,7 +6,7 @@ on:
   
 jobs:
   ImageBuild:
-    name: Build Keycloak Custom Docker Image (amd64 & arm64)
+    name: Build Machine Status API Custom Docker Image (amd64 & arm64)
     runs-on: ubuntu-latest
     steps:
       - name: Slack notification of build start
@@ -16,7 +16,7 @@ jobs:
           SLACK_USERNAME: GitHub Actions
           SLACK_COLOR: "#4381de"
           SLACK_ICON: "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
-          SLACK_TITLE: Start keycloak image build 
+          SLACK_TITLE: Start Machine Status API image build 
           SLACK_MESSAGE: |
             Run number : #${{ github.run_number }}
           
@@ -85,7 +85,7 @@ jobs:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
           SLACK_USERNAME: GitHub Actions
           SLACK_ICON: "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
-          SLACK_TITLE: Keycloak id:mage build succeeded
+          SLACK_TITLE: Machine Status API id:mage build succeeded
           SLACK_MESSAGE: |
             Run number : #${{ github.run_number }}
             Image tag : ${{ github.sha }}-${{ github.run_number }}
@@ -103,6 +103,6 @@ jobs:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
           SLACK_USERNAME: GitHub Actions
           SLACK_ICON: "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
-          SLACK_TITLE: Keycloak image build failed
+          SLACK_TITLE: Machine Status API image build failed
           SLACK_COLOR: danger
           SLACK_MESSAGE: 'Run number : #${{ github.run_number }}'
