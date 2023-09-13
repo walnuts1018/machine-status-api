@@ -7,7 +7,7 @@ require (
 	github.com/gofrs/uuid v4.4.0+incompatible
 	github.com/joho/godotenv v1.5.1
 	github.com/luthermonson/go-proxmox v0.0.0-alpha8
-	github.com/stianeikeland/go-rpio v4.2.0+incompatible
+	github.com/stianeikeland/go-rpio/v4 v4.6.0
 )
 
 require (

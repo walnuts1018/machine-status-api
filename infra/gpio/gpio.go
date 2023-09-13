@@ -5,7 +5,7 @@ import (
 	"log/slog"
 	"time"
 
-	rpio "github.com/stianeikeland/go-rpio"
+	rpio "github.com/stianeikeland/go-rpio/v4"
 	"github.com/walnuts1018/machine-status-api/domain"
 )
 
