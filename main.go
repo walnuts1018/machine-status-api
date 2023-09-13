@@ -2,13 +2,14 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"log/slog"
 	"os"
 
 	"github.com/walnuts1018/machine-status-api/handler"
 	"github.com/walnuts1018/machine-status-api/infra/config"
-	"github.com/walnuts1018/machine-status-api/infra/gpio"
+	"github.com/walnuts1018/machine-status-api/mock/mockGpio"
+
+	//"github.com/walnuts1018/machine-status-api/infra/gpio"
 	"github.com/walnuts1018/machine-status-api/infra/proxmox"
 	"github.com/walnuts1018/machine-status-api/usecase"
 )
@@ -19,10 +20,10 @@ func main() {
 		slog.Error("failed to create config", "error", err)
 		os.Exit(1)
 	}
-	fmt.Println("Loaded config")
+	slog.Info("Loaded config")
 
 	proxmoxClient := proxmox.NewClient(config)
-	gpioClient := gpio.NewClient()
+	gpioClient := mockGpio.NewClient()
 	machineUsecase := usecase.NewClient(proxmoxClient, gpioClient)
 	handler := handler.NewHandler(machineUsecase)
 
