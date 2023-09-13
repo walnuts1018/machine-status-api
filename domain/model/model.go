@@ -4,7 +4,7 @@ type Config struct {
 	PVEApiUrl     string
 	PVEApiTokenID string
 	PVEApiSecret  string
-	Port          int
+	Port          string
 }
 
 type MachineStatus string

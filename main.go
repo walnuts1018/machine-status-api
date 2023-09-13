@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log/slog"
 	"os"
 
@@ -34,8 +35,7 @@ func main() {
 	}()
 
 	slog.Info("start handler")
-	err = handler.Run()
-
+	err = handler.Run(fmt.Sprintf(":%v", config.Port))
 	if err != nil {
 		slog.Error("failed to run handler", "error", err)
 		os.Exit(1)
