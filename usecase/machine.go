@@ -72,8 +72,17 @@ func (c MachineUsecase) StopMachine(machineName string) error {
 }
 
 func (c MachineUsecase) GetMachineStatus(machineName string) (model.MachineStatus, error) {
+	aliceStatus, err := c.getAliceStatus()
+	if err != nil {
+		return aliceStatus, fmt.Errorf("failed to get alice status: %w", err)
+	}
+
 	if machineName == "alice" {
-		return c.getAliceStatus()
+		return aliceStatus, nil
+	}
+
+	if aliceStatus != model.Healthy {
+		return model.Inactive, nil
 	}
 
 	return c.proxmoxClient.GetMachineStatus("alice", machineName)
