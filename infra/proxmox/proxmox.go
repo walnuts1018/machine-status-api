@@ -71,6 +71,7 @@ func (c client) StartMachine(nodeName string, vmName string) error {
 
 	for _, vm := range vms {
 		if vm.Name == vmName {
+			vm.Ping()
 			isrunning := vm.IsRunning()
 			if isrunning {
 				slog.Warn("machine is already running", "machineName", vmName)
@@ -103,6 +104,7 @@ func (c client) StopMachine(nodeName string, vmName string) error {
 	}
 
 	for _, vm := range vms {
+		vm.Ping()
 		if vm.Name == vmName {
 			isrunning := vm.IsRunning()
 			if !isrunning {
