@@ -2,6 +2,8 @@ package usecase
 
 import (
 	"fmt"
+	"log/slog"
+	"sync"
 	"time"
 
 	"github.com/walnuts1018/machine-status-api/domain"
@@ -11,6 +13,8 @@ import (
 type MachineUsecase struct {
 	proxmoxClient domain.ProxmoxClient
 	gpioClient    domain.GPIOClient
+	machines      map[string]int
+	mutex         *sync.Mutex
 }
 
 func NewClient(proxmoxClient domain.ProxmoxClient, gpioClient domain.GPIOClient) *MachineUsecase {
@@ -20,7 +24,7 @@ func NewClient(proxmoxClient domain.ProxmoxClient, gpioClient domain.GPIOClient)
 	}
 }
 
-func (c MachineUsecase) StartMachine(machineName string) error {
+func (c *MachineUsecase) StartMachine(machineName string) error {
 	err := c.gpioClient.StartAlice()
 	if err != nil {
 		return fmt.Errorf("failed to start alice: %w", err)
@@ -55,7 +59,21 @@ LOOP:
 	return nil
 }
 
-func (c MachineUsecase) StopMachine(machineName string) error {
+func (c *MachineUsecase) StartMachineAutomated(machineName string) error {
+	c.mutex.Lock()
+	c.machines[machineName]++
+	if c.machines[machineName] == 1 {
+		err := c.StartMachine(machineName)
+		if err != nil {
+			return fmt.Errorf("failed to start machine: %w", err)
+		}
+	}
+	slog.Info("machine started by automated action", "dependecy", c.machines[machineName])
+	c.mutex.Unlock()
+	return nil
+}
+
+func (c *MachineUsecase) StopMachine(machineName string) error {
 	if machineName == "alice" {
 		err := c.gpioClient.StopAlice()
 		if err != nil {
@@ -71,7 +89,23 @@ func (c MachineUsecase) StopMachine(machineName string) error {
 	return nil
 }
 
-func (c MachineUsecase) GetMachineStatus(machineName string) (model.MachineStatus, error) {
+func (c *MachineUsecase) StopMachineAutomated(machineName string) error {
+	c.mutex.Lock()
+	if c.machines[machineName] != 0 {
+		c.machines[machineName]--
+		if c.machines[machineName] == 0 {
+			err := c.StopMachine(machineName)
+			if err != nil {
+				return fmt.Errorf("failed to stop machine: %w", err)
+			}
+		}
+	}
+	slog.Info("machine stopped by automated action", "dependecy", c.machines[machineName])
+	c.mutex.Unlock()
+	return nil
+}
+
+func (c *MachineUsecase) GetMachineStatus(machineName string) (model.MachineStatus, error) {
 	aliceStatus, err := c.getAliceStatus()
 	if err != nil {
 		return aliceStatus, fmt.Errorf("failed to get alice status: %w", err)
@@ -88,7 +122,7 @@ func (c MachineUsecase) GetMachineStatus(machineName string) (model.MachineStatu
 	return c.proxmoxClient.GetMachineStatus("alice", machineName)
 }
 
-func (c MachineUsecase) getAliceStatus() (model.MachineStatus, error) {
+func (c *MachineUsecase) getAliceStatus() (model.MachineStatus, error) {
 	pwon, err := c.gpioClient.IsPwOn()
 	if err != nil {
 		return model.Unknown, fmt.Errorf("failed to get read alice pw led voltage:%v", err)
