@@ -1,23 +1,28 @@
-# machine-status-api
-RaspberryPiのGPIOを使用して、物理マシンの電源オンオフ、ProxmoxVEの仮想マシンの管理をREST API経由で行えるようにするプログラムです。
+# Machine Status Api
+RaspberryPiのGPIOを使用した物理マシンの操作や、ProxmoxVEの仮想マシンの管理をREST API経由で行えるようにするプログラムです。
 
-## Circuit diagram
+## Getting Started
 
-未作成
+### 回路を作成する
+がんばっていい感じにしてください。
+回路図
 
-回路写真（From Twitter）
-[![Circuit Picture](./.resources/cicuitpicture.jpg)](https://twitter.com/walnuts1018/status/1628759384414367751?s=20)
+回路写真
+[![Circuit Picture](./.resources/cicuitpicture.jpg)](https://twitter.com/walnuts1018/status/1628759384414367751)
 
-## Docker Image
-
-Buildxを利用し、arm64, amd64両方に対応
-
+### 環境変数設定
+|env|sample|detail|
+| --- | --- | --- |
+|GIN_MODE|release|gin用release mode設定|
+|PVE_API_URL|https://proxmox.walnuts.dev/api2/json/|ProxmoxのAPI Endpoint|
+|PVE_API_TOKEN_ID|user@pam!machine-status-api|Proxmox API Token ID|
+|PVE_API_SECRET|******************|Proxmox API Secret|
+### Start with Docker
+対応arch: `arm64`
 ```bash
-docker buildx build --platform linux/amd64,linux/arm64 -t ghcr.io/walnuts1018/machine-status-api:latest -t ghcr.io/walnuts1018/machine-status-api:<tag> . --push
+docker run -p 8080:8080 ghcr.io/walnuts1018/machine-status-api:latest
 ```
 
-(TODO: GitHub Actions)
+### Kubernetes Manifest Sample
 
-## Kubernetes Manifest Sample
-
-- [./.k8s](./.k8s)
+To: [./.k8s](./.k8s)
