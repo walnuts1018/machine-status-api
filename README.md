@@ -11,12 +11,14 @@ RaspberryPiのGPIOを使用した物理マシンの操作や、ProxmoxVEの仮�
 [![Circuit Picture](./.resources/cicuitpicture.jpg)](https://twitter.com/walnuts1018/status/1628759384414367751)
 
 ### 環境変数設定
+
 |env|sample|detail|
 | --- | --- | --- |
 |GIN_MODE|release|gin用release mode設定|
-|PVE_API_URL|https://proxmox.walnuts.dev/api2/json/|ProxmoxのAPI Endpoint|
+|PVE_API_URL|https://proxmox.example.com/api2/json/|ProxmoxのAPI Endpoint|
 |PVE_API_TOKEN_ID|user@pam!machine-status-api|Proxmox API Token ID|
 |PVE_API_SECRET|******************|Proxmox API Secret|
+
 ### Start with Docker
 対応arch: `arm64`
 ```bash
