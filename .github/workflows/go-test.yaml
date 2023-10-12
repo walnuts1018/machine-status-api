@@ -26,8 +26,7 @@ jobs:
 
       - name: Test
         run: |
-          ( go test  -cover ./usecase -coverprofile="cover.out")
-
+          ( go test  -cover `go list ./... | grep -v "github.com/walnuts1018/machine-status-api/infra/.*"` -coverprofile="cover.out" )
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
         with:
