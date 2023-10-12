@@ -26,4 +26,12 @@ jobs:
 
       - name: Test
         run: |
-          ( go test ./usecase )
+          ( go test  -cover ./usecase -coverprofile=cover.out)
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: cover.out
+          fail_ci_if_error: true
+          verbose: true
