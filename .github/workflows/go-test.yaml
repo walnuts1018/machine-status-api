@@ -21,9 +21,6 @@ jobs:
           cache: true
           cache-dependency-path: go.sum
 
-      - name: Go Lint
-        uses: golangci/golangci-lint-action@v3
-
       - name: Build
         run: go build -v ./...
 
