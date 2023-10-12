@@ -11,7 +11,10 @@ RaspberryPiのGPIOを使用した物理マシンの操作や、ProxmoxVEの仮�
 
 ### 回路を作成する
 がんばっていい感じにしてください。
-回路図
+
+回路図はまだないです。
+電源スイッチの部分はフォトカプラとかかましつつ、出力のGPIO(Not Pin)21につないでください。
+電源LEDの部分もフォトカプラかまして、GPIO16に入力してください。電圧にお気をつけて。
 
 回路写真
 [![Circuit Picture](./.resources/cicuitpicture.jpg)](https://twitter.com/walnuts1018/status/1628759384414367751)
