@@ -1,4 +1,5 @@
 # Machine Status Api
+![Go Tests](https://github.com/walnuts1018/machine-status-api/actions/workflows/go-test.yaml/badge.svg)
 RaspberryPiのGPIOを使用した物理マシンの操作や、ProxmoxVEの仮想マシンの管理をREST API経由で行えるようにするプログラムです。
 
 ## Getting Started
