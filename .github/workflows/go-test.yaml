@@ -26,7 +26,7 @@ jobs:
 
       - name: Test
         run: |
-          ( go test  -cover ./usecase -coverprofile=cover.out)
+          ( go test  -cover ./usecase -coverprofile="cover.out")
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
