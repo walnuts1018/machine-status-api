@@ -1,6 +1,7 @@
 # Machine Status Api
 ![Go Tests](https://github.com/walnuts1018/machine-status-api/actions/workflows/go-test.yaml/badge.svg)
 [![Code Coverage](https://img.shields.io/codecov/c/github/walnuts1018/machine-status-api/master.svg)](https://codecov.io/github/walnuts1018/machine-status-api?branch=master)
+[![Go Report](https://goreportcard.com/badge/github.com/walnuts1018/machine-status-api)](https://goreportcard.com/report/github.com/walnuts1018/machine-status-api)
 ![Last Image Build](https://github.com/walnuts1018/machine-status-api/actions/workflows/docker-image.yaml/badge.svg)
 ![Latest Image](https://ghcr-badge.egpl.dev/walnuts1018/machine-status-api/latest_tag?trim=major&label=latest&color=ROYALBLUE)
 
