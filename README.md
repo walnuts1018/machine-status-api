@@ -2,7 +2,7 @@
 ![Go Tests](https://github.com/walnuts1018/machine-status-api/actions/workflows/go-test.yaml/badge.svg)
 [![Code Coverage](https://img.shields.io/codecov/c/github/walnuts1018/machine-status-api/master.svg)](https://codecov.io/github/walnuts1018/machine-status-api?branch=master)
 ![Last Image Build](https://github.com/walnuts1018/machine-status-api/actions/workflows/docker-image.yaml/badge.svg)
-![Latest Image](https://ghcr-badge.egpl.dev/walnuts1018/machine-status-api/latest_tag?trim=major&label=latest&color=#2d6bb3)
+![Latest Image](https://ghcr-badge.egpl.dev/walnuts1018/machine-status-api/latest_tag?trim=major&label=latest&color=ROYALBLUE)
 
 RaspberryPiのGPIOを使用した物理マシンの操作や、ProxmoxVEの仮想マシンの管理をREST API経由で行えるようにするプログラムです。
 
