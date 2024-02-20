@@ -41,7 +41,7 @@ jobs:
       - name: install docker
         if: runner.os == 'macos'
         run: |
-          brew install docker colima --cask
+          brew install docker colima
           colima start
 
       - name: Login to GitHub Container Registry
