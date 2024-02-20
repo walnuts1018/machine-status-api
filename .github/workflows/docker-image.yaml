@@ -31,7 +31,7 @@ jobs:
           - arch: "arm64"
             runs-on: macos-14
             platform: linux/arm64
-    runs-on: ${{ matrix.arch }}
+    runs-on: ${{ matrix.runs-on }}
     outputs:
       imageTag: ${{ env.ImageTag }}
     steps:
