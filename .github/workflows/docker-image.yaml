@@ -67,7 +67,6 @@ jobs:
 
       - name: Build and push Docker images
         uses: docker/build-push-action@v5
-        if: github.event_name == 'release'
         with:
           push: true
           context: .
