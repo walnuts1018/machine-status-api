@@ -1,4 +1,4 @@
-FROM golang:1.23 as builder
+FROM golang:1.27 as builder
 ENV ROOT=/build
 RUN mkdir ${ROOT}
 WORKDIR ${ROOT}
